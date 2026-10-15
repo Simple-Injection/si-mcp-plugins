@@ -29,6 +29,7 @@
         "termsOfServiceURL": "https://simpleinjection.com/terms"
       },
       "review": {
+        "demo_recording_url": "https://youtu.be/qI6-eOVkofE",
         "commerce": false,
         "commerce_description": "The plugin does not support payments or purchases.",
         "test_cases": {
