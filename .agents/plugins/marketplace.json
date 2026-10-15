@@ -1,0 +1,20 @@
+{
+  "name": "simple-injection-plugins",
+  "interface": {
+    "displayName": "Simple Injection"
+  },
+  "plugins": [
+    {
+      "name": "simple-injection-dashboard",
+      "source": {
+        "source": "local",
+        "path": "./simple-injection"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Business & Operations"
+    }
+  ]
+}

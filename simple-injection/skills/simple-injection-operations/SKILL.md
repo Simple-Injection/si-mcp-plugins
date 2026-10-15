@@ -1,11 +1,15 @@
 ---
 name: simple-injection-operations
-description: Use when the user asks to inspect Simple Injection pump or tank-monitor telemetry, device status, history, or alarms through the connected MCP server.
+description: Use when the user asks to connect or activate Simple Injection Dashboard, or inspect pump or tank-monitor telemetry, device status, history, or alarms through its MCP server.
 ---
 
 # Simple Injection operations
 
-Use the connected Simple Injection MCP server for authorized company-scoped field data. Its tools are read-only: list_devices, get_device, get_device_history, and get_device_alarms.
+Use the simple-injection-dashboard MCP server for authorized company-scoped field data. Its tools are read-only: list_devices, get_device, get_device_history, and get_device_alarms.
+
+## Connection and activation
+
+When the user asks to connect or activate this plugin, including through its starter prompt, invoke this server's list_devices with empty arguments once to initiate the connection and verify access. If the host requests authentication, use its OAuth sign-in flow and continue after authorization. Never request credentials in chat or substitute tools from an older Simple Injection installation. If the server is not exposed, direct the user to enable or connect Simple Injection Dashboard in the host's plugin settings. Do not claim the connection succeeded until a tool call succeeds; explain connection errors without repeatedly retrying.
 
 ## Workflow
 
