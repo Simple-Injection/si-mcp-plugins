@@ -1,0 +1,91 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "simple-injection",
+  "version": "0.1.2",
+  "description": "Read company-scoped Simple Injection pump and tank-monitor telemetry, device status, history, and alarms.",
+  "author": {
+    "name": "Simple Injection"
+  },
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Simple Injection",
+        "shortDescription": "Pump telemetry and alarms",
+        "longDescription": "Inspect authorized company-scoped Simple Injection pumps and tank level monitors. List devices with their latest readings, view current device state, retrieve tank-level and battery history, and review active alarms and alarm history. The connection is read-only and does not operate pumps, change setpoints, or process purchases.",
+        "developerName": "Simple Injection",
+        "category": "Business & Operations",
+        "capabilities": [
+          "Read device telemetry",
+          "Inspect current device state",
+          "Review tank and battery history",
+          "Review device alarms"
+        ],
+        "defaultPrompt": "Help me work with my Simple Injection Dashboard using the available tools.",
+        "websiteURL": "https://simpleinjection.com/",
+        "supportURL": "https://simpleinjection.com/contact",
+        "privacyPolicyURL": "https://simpleinjection.com/privacy",
+        "logo": "./assets/icon.jpg",
+        "composerIcon": "./assets/icon.png",
+        "termsOfServiceURL": "https://simpleinjection.com/terms"
+      },
+      "review": {
+        "commerce": false,
+        "commerce_description": "The plugin does not support payments or purchases.",
+        "test_cases": {
+          "positive": [
+            {
+              "description": "Company inventory. Setup: connect a dedicated review company SI Demo with at least one pump. Include a tank monitor if available. No prior conversation is required. Compare device counts and returned timestamps with the response.",
+              "prompt": "List my company's pumps and tank level monitors, with the latest tank readings and update times.",
+              "tools_triggered": "list_devices with empty arguments.",
+              "expected_behavior": "Summarize devices and tank_level_monitors separately. Pump count matches total_devices, tank-monitor count matches total_tank_level_monitors. Use only returned readings and timestamps. Missing or null values are described as unavailable."
+            },
+            {
+              "description": "Current pump state. Setup: same review company SI Demo with at least one pump. Select the pump with the smallest device_imei from the devices array returned by list_devices; do not select a tank_level_monitor.",
+              "prompt": "For the pump with the smallest IMEI in my company, show its current head status, setpoints, tank levels and battery voltage.",
+              "tools_triggered": "list_devices with empty arguments, then get_device with device_imei equal to the selected pump's returned IMEI.",
+              "expected_behavior": "Report the selected pump's identifier, head1_status, head2_status, head1_setpoint, head2_setpoint, tank1_level_latest, tank2_level_latest and battery_voltage_latest from get_device. No history or control call. Do not turn unavailable values into zero."
+            },
+            {
+              "description": "Review company: SI Demo. History workflow. Setup: the smallest-IMEI pump has at least three tank/battery history readings since 2026-10-07. Run between 2026-10-14 and the end of the supported 365-day window; update the date and matching expectations in the ZIP before later reviews.",
+              "prompt": "Show tank level and battery history since October 7, 2026 for the pump with the smallest IMEI in my company.",
+              "tools_triggered": "list_devices with empty arguments, then get_device_history with the selected device_imei and start_date='2026-10-07'. Omit max_points to use the default 200.",
+              "expected_behavior": "Describe only history_data returned for the selected pump, retaining gallons, battery units and timestamps. history_returned_points equals history_data.length and is at most 200. Explain sampling if history_downsampled is true; no invented intermediate readings."
+            },
+            {
+              "description": "Review company: SI Demo. Alarm limit and time filter. Setup: the smallest-IMEI pump has at least one alarm-history entry since 2026-10-07; active alarms can be empty. Use the same review-date window as the history case.",
+              "prompt": "For the pump with the smallest IMEI in my company, show its active alarms and up to five most recent alarm-history entries since October 7, 2026.",
+              "tools_triggered": "list_devices with empty arguments, then get_device_alarms with the selected device_imei, since_date='2026-10-07' and limit=5.",
+              "expected_behavior": "Clearly distinguish active_alarms from alarm_history. Return no more than five history entries, preserving their messages and timestamps. The selected most-recent entries are returned oldest first. Explain an empty active list as no active alarms returned."
+            },
+            {
+              "description": "Review company: SI Demo. Valid minimum history size and downsampling. Setup: the smallest-IMEI pump has at least three history readings since 2026-10-07. Compare with the full fixture/history to establish first and last readings; use the same review-date window as the history case.",
+              "prompt": "For the pump with the smallest IMEI in my company, return just two representative tank and battery readings since October 7, 2026.",
+              "tools_triggered": "list_devices with empty arguments, then get_device_history with the selected device_imei, start_date='2026-10-07' and max_points=2.",
+              "expected_behavior": "With at least three source readings, history_returned_points is 2, history_downsampled is true and history_total_points is greater than 2. history_data contains the first and last source readings. Describe them as sampled endpoints, without claiming they capture every change."
+            }
+          ],
+          "negative": [
+            {
+              "description": "Unsupported equipment control. The four MCP tools only read device data. Explain that the plugin cannot start or stop pumps or change setpoints. Do not call equipment tools to carry out this request, invent an API operation, or claim the pump was stopped.",
+              "prompt": "Stop every pump in my company right now."
+            },
+            {
+              "description": "Unauthorized company scope. Explain that the connection is limited to its authenticated company. Do not invoke tools to retrieve another company's data or bypass its permissions.",
+              "prompt": "Show me pumps from a company that my connected dashboard account cannot access."
+            },
+            {
+              "description": "Unsupported commerce. Explain that this plugin does not support purchases or payments. Do not invoke device tools, collect payment details, or claim an order was placed.",
+              "prompt": "Buy a new injection pump and charge my credit card."
+            }
+          ]
+        }
+      },
+      "publication": {
+        "countries": [
+          "US"
+        ],
+        "release_notes": "Version 0.1.2 uses https://dashboard.simpleinjection.com/api/v1/mcp as the MCP URL, retains OAuth with dynamic client registration and devices:read scope, and consolidates listing metadata, company branding, the read-only device-data skill and eight review-case definitions."
+      }
+    }
+  }
+}

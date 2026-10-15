@@ -1,0 +1,30 @@
+{
+  "interface": {
+    "displayName": "Simple Injection",
+    "shortDescription": "Pump telemetry and alarms",
+    "longDescription": "Inspect authorized company-scoped Simple Injection pumps and tank level monitors. List devices with their latest readings, view current device state, retrieve tank-level and battery history, and review active alarms and alarm history. The connection is read-only and does not operate pumps, change setpoints, or process purchases.",
+    "developerName": "Simple Injection",
+    "category": "Business & Operations",
+    "capabilities": [
+      "Read device telemetry",
+      "Inspect current device state",
+      "Review tank and battery history",
+      "Review device alarms"
+    ],
+    "defaultPrompt": "Help me work with my Simple Injection Dashboard using the available tools.",
+    "websiteURL": "https://simpleinjection.com/",
+    "supportURL": "https://simpleinjection.com/contact",
+    "privacyPolicyURL": "https://simpleinjection.com/privacy",
+    "logo": "./assets/icon.jpg",
+    "composerIcon": "./assets/icon.png",
+    "termsOfServiceURL": "https://simpleinjection.com/terms"
+  },
+  "name": "simple-injection",
+  "version": "0.1.2",
+  "description": "Read company-scoped Simple Injection pump and tank-monitor telemetry, device status, history, and alarms.",
+  "author": {
+    "name": "Simple Injection"
+  },
+  "keywords": [],
+  "mcpServers": "./.mcp.json"
+}
