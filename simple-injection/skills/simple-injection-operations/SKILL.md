@@ -1,6 +1,6 @@
 ---
 name: simple-injection-operations
-description: Use when the user asks to connect or activate Simple Injection Dashboard, or inspect pump or tank-monitor telemetry, device status, history, or alarms through its MCP server.
+description: Use when the user asks to connect or activate Simple Injection, or inspect pump or tank-monitor telemetry, device status, history, or alarms through its MCP server.
 ---
 
 # Simple Injection operations
@@ -9,7 +9,9 @@ Use the simple-injection-dashboard MCP server for authorized company-scoped fiel
 
 ## Connection and activation
 
-When the user asks to connect or activate this plugin, including through its starter prompt, invoke this server's list_devices with empty arguments once to initiate the connection and verify access. If the host requests authentication, use its OAuth sign-in flow and continue after authorization. Never request credentials in chat or substitute tools from an older Simple Injection installation. If the server is not exposed, direct the user to enable or connect Simple Injection Dashboard in the host's plugin settings. Do not claim the connection succeeded until a tool call succeeds; explain connection errors without repeatedly retrying.
+When the user asks to connect or activate this plugin, including through its starter prompt, invoke this server's list_devices with empty arguments once to initiate the connection and verify access. If the host requests authentication, use its OAuth sign-in flow and continue after authorization. Never request credentials in chat or substitute tools from an older Simple Injection installation. If the server is not exposed, direct the user to enable or connect Simple Injection in the host's plugin settings. Do not claim the connection succeeded until a tool call succeeds; explain connection errors without repeatedly retrying.
+
+The hosted OAuth server also provides get_profile for the connected account and company. Use it when the user asks which account is connected; it is read-only and takes no arguments. Do not infer identity from device names. Its availability depends on the deployed server version.
 
 ## Workflow
 

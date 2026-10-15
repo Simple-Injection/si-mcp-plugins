@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "simple-injection-dashboard",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Read company-scoped Simple Injection pump and tank-monitor telemetry, device status, history, and alarms.",
   "author": {
     "name": "Simple Injection"
@@ -9,7 +9,7 @@
   "extensions": {
     "com.openai": {
       "interface": {
-        "displayName": "Simple Injection Dashboard",
+        "displayName": "Simple Injection",
         "shortDescription": "Pump telemetry and alarms",
         "longDescription": "Inspect authorized company-scoped Simple Injection pumps and tank level monitors. List devices with their latest readings, view current device state, retrieve tank-level and battery history, and review active alarms and alarm history. The connection is read-only and does not operate pumps, change setpoints, or process purchases.",
         "developerName": "Simple Injection",
@@ -20,7 +20,7 @@
           "Review tank and battery history",
           "Review device alarms"
         ],
-        "defaultPrompt": "Connect to my Simple Injection Dashboard and list my company's pumps and tank level monitors.",
+        "defaultPrompt": "Connect to Simple Injection and list my company's pumps and tank level monitors.",
         "websiteURL": "https://simpleinjection.com/",
         "supportURL": "https://simpleinjection.com/contact",
         "privacyPolicyURL": "https://simpleinjection.com/privacy",
@@ -84,7 +84,7 @@
         "countries": [
           "US"
         ],
-        "release_notes": "Version 0.1.5 fixes MCP loading in Codex Desktop by removing unsupported server-level extensions. OAuth remains required and is discovered through the server authentication challenge and metadata. The dashboard endpoint and read-only tools are unchanged."
+        "release_notes": "Version 0.1.6 displays the plugin as Simple Injection while retaining its existing connection identity. The hosted OAuth server adds get_profile to provide connected account and company labels on supported hosts after backend deployment."
       }
     }
   }
