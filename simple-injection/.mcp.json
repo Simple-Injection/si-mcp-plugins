@@ -2,7 +2,7 @@
   "mcpServers": {
     "simple-injection": {
       "type": "streamable-http",
-      "url": "https://dashboard.simpleinjection.com/api/v1/mcp",
+      "url": "https://dashboardv2.simpleinjection.com/api/v1/mcp",
       "extensions": {
         "com.openai": {
           "auth": {
