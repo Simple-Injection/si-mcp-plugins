@@ -8,7 +8,7 @@ The plugin **cannot** operate equipment. It does not start or stop pumps, change
 |---|---|
 | Plugin ID | `simple-injection-dashboard` |
 | Display name | Simple Injection |
-| Version | 0.1.6 |
+| Version | 1.1.0 |
 | MCP endpoint | `https://dashboard.simpleinjection.com/api/v1/mcp` (streamable HTTP) |
 | Auth | OAuth 2.0 with PKCE, scope `devices:read` |
 | Category | Business & Operations |
@@ -83,7 +83,7 @@ The plugin will turn down requests like "stop every pump" or "buy a new pump". I
 - **Keep the server ID as `simple-injection-dashboard`.** Existing user connections depend on it. Change only the display name.
 - **Don't package credentials.** The server enforces OAuth and advertises it through its HTTP 401 challenge and OAuth metadata.
 - **Review cases live in `plugin.json`.** They're under `extensions["com.openai"].review.test_cases` (5 positive, 3 negative). They use dated prompts, so update the dates and expectations before each review round.
-- **`.zip` files are git-ignored.** Build a fresh archive of `simple-injection/` for each upload. Older 0.1.3/0.1.4 ZIPs are out of date and shouldn't be used.
+- **`.zip` files are git-ignored.** Build a fresh archive of `simple-injection/` for each upload. Older ZIPs (0.1.x) are out of date and shouldn't be used.
 
 ## Submission status
 

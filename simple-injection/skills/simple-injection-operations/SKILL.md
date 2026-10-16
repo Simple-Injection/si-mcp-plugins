@@ -1,5 +1,5 @@
 ---
-name: simple-injection-operations
+name: Simple Injection Operations
 description: Use when the user asks to connect or activate Simple Injection, or inspect pump or tank-monitor telemetry, device status, history, or alarms through its MCP server.
 ---
 
