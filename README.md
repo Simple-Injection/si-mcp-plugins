@@ -18,6 +18,7 @@ The plugin **cannot** operate equipment. It does not start or stop pumps, change
 ```
 .
 ├── .agents/plugins/marketplace.json   # Local marketplace "simple-injection-plugins"
+├── .claude-plugin/marketplace.json    # Claude Code marketplace
 ├── simple-injection/                  # Plugin source (this is what gets installed/packaged)
 │   ├── .codex-plugin/plugin.json      # Codex manifest -> ./.mcp.json
 │   ├── .mcp.json                      # MCP server config used by the Codex manifest
@@ -43,6 +44,14 @@ The MCP server provides these tools. They are all read-only.
 | `get_profile` | Gets the connected account and company labels (OAuth connections only, and only on newer server deployments) | none |
 
 History and alarm queries can look back at most 365 days. Every result is limited to the company that authenticated.
+
+## Installation (Claude Code)
+
+```
+/plugin install simple-injection-dashboard --marketplace Simple-Injection/si-openai-plugin
+```
+
+Then run `/mcp`, select `simple-injection-dashboard`, and complete the OAuth sign-in in the browser. The Claude Code manifest is `simple-injection/.claude-plugin/plugin.json` and the marketplace is `.claude-plugin/marketplace.json`; both reuse the same `.mcp.json`, assets and skill as the Codex plugin. Validate with `claude plugin validate --strict ./simple-injection --profile directory`.
 
 ## Installation (local, Codex CLI)
 

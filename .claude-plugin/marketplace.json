@@ -1,0 +1,13 @@
+{
+  "name": "simple-injection-plugins",
+  "owner": { "name": "Simple Injection" },
+  "description": "Simple Injection plugins for Claude Code",
+  "plugins": [
+    {
+      "name": "simple-injection-dashboard",
+      "source": "./simple-injection",
+      "description": "Read company-scoped Simple Injection pump and tank-monitor telemetry, device status, history, and alarms.",
+      "category": "Business & Operations"
+    }
+  ]
+}

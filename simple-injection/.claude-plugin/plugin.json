@@ -1,0 +1,19 @@
+{
+  "name": "simple-injection-dashboard",
+  "displayName": "Simple Injection",
+  "version": "1.1.0",
+  "description": "Read company-scoped Simple Injection pump and tank-monitor telemetry, device status, history, and alarms. Read-only; cannot operate pumps or change setpoints.",
+  "author": {
+    "name": "Simple Injection",
+    "url": "https://simpleinjection.com/"
+  },
+  "homepage": "https://simpleinjection.com/",
+  "repository": "https://github.com/Simple-Injection/si-openai-plugin",
+  "license": "Apache-2.0",
+  "keywords": ["pumps", "telemetry", "tank-level", "alarms", "monitoring", "oilfield"],
+  "icon": "./assets/icon.png",
+  "documentationUrl": "https://simpleinjection.com/",
+  "supportUrl": "https://simpleinjection.com/contact",
+  "privacyPolicyUrl": "https://simpleinjection.com/privacy",
+  "termsOfServiceUrl": "https://simpleinjection.com/terms"
+}
