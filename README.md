@@ -37,7 +37,7 @@ This repository hosts the same plugin for two platforms. Each platform gets its 
 │       ├── .mcp.json
 │       └── assets/, skills/                   # Copies of shared/
 ├── scripts/sync-shared.sh                     # Copies shared/ into each plugin folder
-└── submission-notes/                          # Submission status, investigations, drafts
+└── submission-notes/                          # Local only (git-ignored): submission status and drafts
 ```
 
 ### Shared files
@@ -116,7 +116,7 @@ The plugin will turn down requests like "stop every pump" or "buy a new pump". I
 
 ## Submission status
 
-See [submission-notes/README.md](submission-notes/README.md) for current status, verification evidence, and remaining requirements: privacy addendum, running the review cases against live data, demo recording, and portal steps. Files under `submission-notes/history/` are older snapshots, not current configuration.
+Submission notes, reviewer access details and drafts are kept locally in `submission-notes/`, which is git-ignored. They are never committed.
 
 ## Links
 
