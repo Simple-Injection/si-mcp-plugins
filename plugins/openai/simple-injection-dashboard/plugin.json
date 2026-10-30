@@ -82,9 +82,7 @@
         }
       },
       "publication": {
-        "countries": [
-          "US"
-        ],
+        "countries": [],
         "release_notes": "Version 1.1.1 fixes skill discovery: the bundled skill ID is now simple-injection-operations, and it is still displayed as Simple Injection Operations. The plugin is still displayed as Simple Injection and retains its existing connection identity. The hosted OAuth server adds get_profile to provide connected account and company labels on supported hosts after backend deployment."
       }
     }
