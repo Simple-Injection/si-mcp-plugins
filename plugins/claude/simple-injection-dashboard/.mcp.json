@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "simple-injection-dashboard": {
+      "type": "http",
+      "url": "https://dashboard.simpleinjection.com/api/v1/mcp"
+    }
+  }
+}

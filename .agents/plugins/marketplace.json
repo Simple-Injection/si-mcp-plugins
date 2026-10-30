@@ -8,7 +8,7 @@
       "name": "simple-injection-dashboard",
       "source": {
         "source": "local",
-        "path": "./simple-injection"
+        "path": "./plugins/openai/simple-injection-dashboard"
       },
       "policy": {
         "installation": "AVAILABLE",

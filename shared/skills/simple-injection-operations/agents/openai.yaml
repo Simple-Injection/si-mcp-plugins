@@ -1,0 +1,3 @@
+interface:
+  display_name: "Simple Injection Operations"
+  short_description: "Read pump and tank-monitor telemetry and alarms"

@@ -1,6 +1,6 @@
 # Simple Injection plugin
 
-A read-only plugin that lets an AI assistant (Codex / ChatGPT plugins) look at your company's [Simple Injection](https://simpleinjection.com/) pumps and tank level monitors. It connects to the hosted Simple Injection dashboard MCP server over OAuth. From there it can list devices, show current device state, pull tank-level and battery history, and review alarms.
+A read-only plugin that lets an AI assistant (Claude, Codex / ChatGPT) look at your company's [Simple Injection](https://simpleinjection.com/) pumps and tank level monitors. It connects to the hosted Simple Injection dashboard MCP server over OAuth. From there it can list devices, show current device state, pull tank-level and battery history, and review alarms.
 
 The plugin **cannot** operate equipment. It does not start or stop pumps, change setpoints, or handle purchases.
 
@@ -8,28 +8,48 @@ The plugin **cannot** operate equipment. It does not start or stop pumps, change
 |---|---|
 | Plugin ID | `simple-injection-dashboard` |
 | Display name | Simple Injection |
-| Version | 1.1.0 |
+| Version | 1.1.1 |
 | MCP endpoint | `https://dashboard.simpleinjection.com/api/v1/mcp` (streamable HTTP) |
 | Auth | OAuth 2.0 with PKCE, scope `devices:read` |
 | Category | Business & Operations |
 
 ## Repository layout
 
+This repository hosts the same plugin for two platforms. Each platform gets its own self-contained folder, so each is submitted and versioned independently.
+
 ```
 .
-├── .agents/plugins/marketplace.json   # Local marketplace "simple-injection-plugins"
-├── .claude-plugin/marketplace.json    # Claude Code marketplace
-├── simple-injection/                  # Plugin source (this is what gets installed/packaged)
-│   ├── .codex-plugin/plugin.json      # Codex manifest -> ./.mcp.json
-│   ├── .mcp.json                      # MCP server config used by the Codex manifest
-│   ├── plugin.json                    # Portable manifest (agent-plugins schema) + review test cases
-│   ├── mcp.json                       # MCP server config discovered by portable clients
-│   ├── assets/                        # icon.jpg (logo), icon.png (composer icon)
-│   └── skills/simple-injection-operations/SKILL.md   # Agent instructions for using the tools
-└── submission-notes/                  # Plugin directory submission status, investigations, drafts
+├── .claude-plugin/marketplace.json            # Claude Code marketplace -> plugins/claude/...
+├── .agents/plugins/marketplace.json           # Codex marketplace       -> plugins/openai/...
+├── shared/                                    # Source of truth for files both plugins use
+│   ├── assets/                                # icon.jpg (logo), icon.png (icon)
+│   └── skills/simple-injection-operations/SKILL.md
+├── plugins/
+│   ├── claude/simple-injection-dashboard/     # Anthropic submission (plugin path)
+│   │   ├── .claude-plugin/plugin.json
+│   │   ├── .mcp.json                          # type "http" (Claude)
+│   │   ├── README.md                          # Listing description; discloses what the plugin sends
+│   │   └── assets/, skills/                   # Copies of shared/
+│   └── openai/simple-injection-dashboard/     # OpenAI submission (zip this folder)
+│       ├── plugin.json                        # Portable manifest + review test cases
+│       ├── mcp.json                           # Portable MCP config (type "streamable-http")
+│       ├── .codex-plugin/plugin.json          # Codex manifest -> ./.mcp.json
+│       ├── .mcp.json
+│       └── assets/, skills/                   # Copies of shared/
+├── scripts/sync-shared.sh                     # Copies shared/ into each plugin folder
+└── submission-notes/                          # Submission status, investigations, drafts
 ```
 
-The two manifests and the two MCP config files are meant to stay in sync: same version, same server ID, same URL.
+### Shared files
+
+Plugin directories install only the plugin folder and reject symlinks, so shared files are committed as real copies. Edit them in `shared/`, then run:
+
+```
+scripts/sync-shared.sh           # update the copies
+scripts/sync-shared.sh --check   # fail if any copy has drifted
+```
+
+Platform-specific files (manifests, MCP configs, the Claude README) live only in their plugin folder. Both MCP configs must keep the same server ID and URL; they differ only in `type`, because the portable schema requires `streamable-http` and the Claude directory requires `http`.
 
 ## Tools
 
@@ -48,10 +68,10 @@ History and alarm queries can look back at most 365 days. Every result is limite
 ## Installation (Claude Code)
 
 ```
-/plugin install simple-injection-dashboard --marketplace Simple-Injection/si-openai-plugin
+/plugin install simple-injection-dashboard --marketplace Simple-Injection/si-mcp-plugins
 ```
 
-Then run `/mcp`, select `simple-injection-dashboard`, and complete the OAuth sign-in in the browser. The Claude Code manifest is `simple-injection/.claude-plugin/plugin.json` and the marketplace is `.claude-plugin/marketplace.json`; both reuse the same `.mcp.json`, assets and skill as the Codex plugin. Validate with `claude plugin validate --strict ./simple-injection --profile directory`.
+Then run `/mcp`, select `simple-injection-dashboard`, and complete the OAuth sign-in in the browser. Validate with `claude plugin validate --strict ./plugins/claude/simple-injection-dashboard --profile directory`. To submit, use plugin path `plugins/claude/simple-injection-dashboard` in the [developer portal](https://claude.ai/directory/manage).
 
 ## Installation (local, Codex CLI)
 
@@ -87,12 +107,12 @@ The plugin will turn down requests like "stop every pump" or "buy a new pump". I
 
 ## Development notes
 
-- **Bump the version in both manifests.** Update `simple-injection/plugin.json` and `simple-injection/.codex-plugin/plugin.json` together. Also update `publication.release_notes` in `plugin.json`.
+- **Versions are independent per platform.** For an OpenAI release, bump `plugins/openai/simple-injection-dashboard/plugin.json` and `.codex-plugin/plugin.json` together and update `publication.release_notes`. For a Claude release, bump `plugins/claude/simple-injection-dashboard/.claude-plugin/plugin.json`; the directory requires a new version for every release.
 - **Don't add server-level `extensions` to the MCP configs.** Codex Desktop rejects them (`unknown field extensions, expected url or headers`), which stops the server from loading before OAuth starts.
 - **Keep the server ID as `simple-injection-dashboard`.** Existing user connections depend on it. Change only the display name.
 - **Don't package credentials.** The server enforces OAuth and advertises it through its HTTP 401 challenge and OAuth metadata.
-- **Review cases live in `plugin.json`.** They're under `extensions["com.openai"].review.test_cases` (5 positive, 3 negative). They use dated prompts, so update the dates and expectations before each review round.
-- **`.zip` files are git-ignored.** Build a fresh archive of `simple-injection/` for each upload. Older ZIPs (0.1.x) are out of date and shouldn't be used.
+- **OpenAI review cases live in `plugins/openai/simple-injection-dashboard/plugin.json`.** They're under `extensions["com.openai"].review.test_cases` (5 positive, 3 negative). They use dated prompts, so update the dates and expectations before each review round.
+- **`.zip` files are git-ignored.** Build a fresh archive of the contents of `plugins/openai/simple-injection-dashboard/` for each OpenAI upload. Older ZIPs (0.1.x) are out of date and shouldn't be used.
 
 ## Submission status
 

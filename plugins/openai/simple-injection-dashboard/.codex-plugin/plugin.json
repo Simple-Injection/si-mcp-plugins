@@ -20,7 +20,7 @@
     "termsOfServiceURL": "https://simpleinjection.com/terms"
   },
   "name": "simple-injection-dashboard",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Read company-scoped Simple Injection pump and tank-monitor telemetry, device status, history, and alarms.",
   "author": {
     "name": "Simple Injection"

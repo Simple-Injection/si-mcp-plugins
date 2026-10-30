@@ -5,7 +5,7 @@
   "plugins": [
     {
       "name": "simple-injection-dashboard",
-      "source": "./simple-injection",
+      "source": "./plugins/claude/simple-injection-dashboard",
       "description": "Read company-scoped Simple Injection pump and tank-monitor telemetry, device status, history, and alarms.",
       "category": "Business & Operations"
     }
